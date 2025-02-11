@@ -15,10 +15,13 @@ buses= system.getVehicles()
 
 #print(routes[22].__dict__)
 
-
+# use bus name to check on the passiogo app, its easier
+# use bus routeName== "Central Station / 31st & Iowa via KU" which is the bus to be tracked
 for bus in buses:
     if bus.routeName== "Central Station / 31st & Iowa via KU":
-        print("Longitude:"+ bus.longitude)
+        print("Longitude:"+ bus.longitude, bus.id, bus.name)
+
+
 
 
 # target_route= routes[22]
