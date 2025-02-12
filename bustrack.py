@@ -16,10 +16,11 @@ buses= system.getVehicles()
 
 #print(routes[22].__dict__)
 
+# use this longitude: Longitude:38.942722900 for the location to get the notice from
 # use bus name to check on the passiogo app, its easier
 # use bus routeName== "Central Station / 31st & Iowa via KU" which is the bus to be tracked
 for bus in buses:
-    if bus.routeName== "Central Station / 31st & Iowa via KU":
+    if bus.routeName== "Central Station / 31st & Iowa via KU" or "Route Central Station / 27th & Wakarusa":
         print("Longitude:"+ bus.longitude, bus.id, bus.name)
 
 
