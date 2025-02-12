@@ -1,5 +1,6 @@
 import passiogo
 
+#system for Lawrence Transit
 system_id= 4834
 
 system= passiogo.getSystemFromID(system_id)
