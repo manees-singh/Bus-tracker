@@ -33,6 +33,7 @@ So, I built Bus-Tracker, an automated solution that notifies me when the bus rea
 ```bash
 git clone https://github.com/yourusername/bus-tracker.git
 cd bus-tracker
+```
 
 ## **Future Plans 🚀**
 Right now, this works perfectly for me—I no longer freeze at the stop or constantly check my phone.
