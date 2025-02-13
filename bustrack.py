@@ -1,18 +1,52 @@
+import time
+import os
+from dotenv import load_dotenv
 import passiogo
+from message import TwilioCall
+
+
+load_dotenv()
+auth_token = os.getenv("AUTH_TOKEN")
+account_sid = os.getenv("ACCOUNT_SID")
+twilio_phone_number = os.getenv("TWILIO_PHONE_NUMBER")
+to_phone_number = os.getenv("TO_PHONE_NUMBER")
+
 
 #system for Lawrence Transit
 system_id= 4834
 
 system= passiogo.getSystemFromID(system_id)
-
-
 routes= system.getRoutes()
+target_route= routes[37] 
+print(target_route.__dict__['name']) # route for Bus 12, route 37 somehow works
 
 
-buses= system.getVehicles()
+stops = target_route.getStops()
+target_stop=stops[5] 
+target_stop_id= target_stop.id### 'name'= 323 - Clinton @ Hawthorn
+
+
+twilio=TwilioCall(account_sid, auth_token, twilio_phone_number)
+
+
+
+def track_bus():
+    while True:
+        buses= system.getVehicles()
+        for bus in buses:
+            if bus.stopID ==target_stop_id:
+               twilio.make_call(to_phone_number)
+
+
+track_bus()   
+
+# for stop in stops:
+#     print(f"Stop Name: {stop.name}, Latitude: {stop.latitude}, Longitude: {stop.longitude}")
+
+
 
 # for i in range(42):
-#     print(routes[i].__dict__['shortName'],i)
+#     print(routes[i].__dict__['name'], routes[i].__dict__['shortName'],i )
 
 #print(routes[22].__dict__)
 
@@ -23,15 +57,13 @@ buses= system.getVehicles()
 
 # for bus in buses:
 #     if bus.routeName== "Central Station / 31st & Iowa via KU" or "Route Central Station / 27th & Wakarusa":
-#         if bus.longitude==
+#         print(bus)
 
 
 
 
-target_route= routes[32]
-# for bus in buses:
-#     if bus.==target_route.id:
-#         print (bus.name, bus.longitude)
+
+
 
 # for i in range(31):
 #     print(buses[i].__dict__)
@@ -48,6 +80,4 @@ target_route= routes[32]
 
 ###Routes####
 
-stops = target_route.getStops()
-for stop in stops:
-    print(f"Stop Name: {stop.name}, Latitude: {stop.latitude}, Longitude: {stop.longitude}")
+
