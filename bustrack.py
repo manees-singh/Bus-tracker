@@ -12,7 +12,7 @@ twilio_phone_number = os.getenv("TWILIO_PHONE_NUMBER")
 to_phone_number = os.getenv("TO_PHONE_NUMBER")
 
 
-#system for Lawrence Transit
+#system id for Lawrence Transit
 system_id= 4834
 
 system= passiogo.getSystemFromID(system_id)
@@ -25,20 +25,37 @@ stops = target_route.getStops()
 target_stop=stops[5] 
 target_stop_id= target_stop.id### 'name'= 323 - Clinton @ Hawthorn
 
-
-twilio=TwilioCall(account_sid, auth_token, twilio_phone_number)
-
+print(vars(target_route))
 
 
-def track_bus():
-    while True:
-        buses= system.getVehicles()
-        for bus in buses:
-            if bus.stopID ==target_stop_id:
-               twilio.make_call(to_phone_number)
+
+#twilio=TwilioCall(account_sid, auth_token, twilio_phone_number)
+buses=system.getVehicles()
+# for bus in buses:
+#     print (vars(bus))
 
 
-track_bus()   
+for bus in buses:
+    if bus.routeName== "Central Station / 27th & Wakarusa":
+        print(f"{bus.name}, Longitude:{bus.longitude}, {vars(bus)}")
+
+
+#This is all the information that can be gained by tracking the bus
+'''
+{'id': 16410, 'name': '364', 'type': None, 'system': <passiogo.TransportationSystem object at 0x7f8041c9edd0>, 'calculatedCourse': '1.7087058734558127', 'routeId': '53924', 'routeName': 'Central Station / 27th & Wakarusa', 'color': '#f7b7d3', 'created': '08:42 PM', 'longitude': '38.956884500', 'speed': None, 'paxLoad': None, 'outOfService': 0, 'more': '101', 'tripId': '750423'}
+'''
+
+
+# def track_bus():
+#     while True:
+#         buses= system.getVehicles()
+#         for bus in buses:
+#             if bus.stopID ==target_stop_id:
+#                 print("bus is here")
+#                 twilio.make_call(to_phone_number)
+
+
+#track_bus()   
 
 # for stop in stops:
 #     print(f"Stop Name: {stop.name}, Latitude: {stop.latitude}, Longitude: {stop.longitude}")
@@ -55,9 +72,7 @@ track_bus()
 # use bus routeName== "Central Station / 31st & Iowa via KU" which is the bus to be tracked
 
 
-# for bus in buses:
-#     if bus.routeName== "Central Station / 31st & Iowa via KU" or "Route Central Station / 27th & Wakarusa":
-#         print(bus)
+
 
 
 
