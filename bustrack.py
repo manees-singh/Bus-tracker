@@ -11,6 +11,7 @@ account_sid = os.getenv("ACCOUNT_SID")
 twilio_phone_number = os.getenv("TWILIO_PHONE_NUMBER")
 to_phone_number = os.getenv("TO_PHONE_NUMBER")
 
+twilio_call = TwilioCall(account_sid, auth_token, twilio_phone_number)
 
 #system id for Lawrence Transit
 system_id= 4834
@@ -25,7 +26,7 @@ stops = target_route.getStops()
 target_stop=stops[5] 
 target_stop_id= target_stop.id### 'name'= 323 - Clinton @ Hawthorn
 
-print(vars(target_route))
+
 
 
 
@@ -35,9 +36,13 @@ buses=system.getVehicles()
 #     print (vars(bus))
 
 
+#calculated course of the bus can be used to find the direction of the bus travel. 
 for bus in buses:
-    if bus.routeName== "Central Station / 27th & Wakarusa":
+    if bus.routeName== "Central Station / 27th & Wakarusa": #sometimes drivers forget to change from bus 11 to 12 so use both 
         print(f"{bus.name}, Longitude:{bus.longitude}, {vars(bus)}")
+        if   float(38.940000000)  < float(bus.longitude) < float(38.956884500):
+            print('hello there.')
+            twilio_call.make_call(to_phone_number)
 
 
 #This is all the information that can be gained by tracking the bus
