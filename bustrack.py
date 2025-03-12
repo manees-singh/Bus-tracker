@@ -2,16 +2,17 @@ import time
 import os
 from dotenv import load_dotenv
 import passiogo
-from message import TwilioCall
+from twilio.rest import Client
 
-
+# Set up for twilio call. 
 load_dotenv()
 auth_token = os.getenv("AUTH_TOKEN")
 account_sid = os.getenv("ACCOUNT_SID")
 twilio_phone_number = os.getenv("TWILIO_PHONE_NUMBER")
 to_phone_number = os.getenv("TO_PHONE_NUMBER")
 
-twilio_call = TwilioCall(account_sid, auth_token, twilio_phone_number)
+client= Client(account_sid, auth_token)
+
 
 #system id for Lawrence Transit
 system_id= 4834
@@ -22,9 +23,11 @@ target_route= routes[37]
 print(target_route.__dict__['name']) # route for Bus 12, route 37 somehow works
 
 
-stops = target_route.getStops()
-target_stop=stops[5] 
-target_stop_id= target_stop.id### 'name'= 323 - Clinton @ Hawthorn
+
+#explored using stops but didn't work as stop information not provided for the bus.
+# stops = target_route.getStops()
+# target_stop=stops[5] 
+# target_stop_id= target_stop.id### 'name'= 323 - Clinton @ Hawthorn
 
 
 
@@ -32,17 +35,20 @@ target_stop_id= target_stop.id### 'name'= 323 - Clinton @ Hawthorn
 
 #twilio=TwilioCall(account_sid, auth_token, twilio_phone_number)
 buses=system.getVehicles()
-# for bus in buses:
-#     print (vars(bus))
+
 
 
 #calculated course of the bus can be used to find the direction of the bus travel. 
 for bus in buses:
     if bus.routeName== "Central Station / 27th & Wakarusa": #sometimes drivers forget to change from bus 11 to 12 so use both 
         print(f"{bus.name}, Longitude:{bus.longitude}, {vars(bus)}")
-        if   float(38.940000000)  < float(bus.longitude) < float(38.956884500):
+        if   float(38.940000000)  < float(bus.longitude) < float(38.956884500): # the range of longitude where the function should get activated
             print('hello there.')
-            twilio_call.make_call(to_phone_number)
+            call=client.calls.create(
+                to=to_phone_number,
+                from_=twilio_phone_number,
+                twiml="<Response><Say>Hello! Your bus is arriving soon.</Say></Response>"
+            )
 
 
 #This is all the information that can be gained by tracking the bus
@@ -51,24 +57,12 @@ for bus in buses:
 '''
 
 
-# def track_bus():
-#     while True:
-#         buses= system.getVehicles()
-#         for bus in buses:
-#             if bus.stopID ==target_stop_id:
-#                 print("bus is here")
-#                 twilio.make_call(to_phone_number)
-
-
-#track_bus()   
-
-# for stop in stops:
-#     print(f"Stop Name: {stop.name}, Latitude: {stop.latitude}, Longitude: {stop.longitude}")
 
 
 
-# for i in range(42):
-#     print(routes[i].__dict__['name'], routes[i].__dict__['shortName'],i )
+
+
+
 
 #print(routes[22].__dict__)
 
@@ -79,25 +73,5 @@ for bus in buses:
 
 
 
-
-
-
-
-
-
-# for i in range(31):
-#     print(buses[i].__dict__)
-#print(routes[22].__dict__)
-
-# route id upto 42
-# number of buses upto 31 
-
-
-### Longitude of concern
-#for bus 11, route id is 22, 28, 
-#for bus 12, route id is 32, 37
-
-
-###Routes####
 
 
