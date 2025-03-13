@@ -20,7 +20,7 @@ system_id= 4834
 system= passiogo.getSystemFromID(system_id)
 routes= system.getRoutes()
 target_route= routes[37] 
-print(target_route.__dict__['name']) # route for Bus 12, route 37 somehow works
+ # route for Bus 12, route 37 somehow works
 
 
 
@@ -42,7 +42,7 @@ buses=system.getVehicles()
 for bus in buses:
     if bus.routeName== "Central Station / 27th & Wakarusa": #sometimes drivers forget to change from bus 11 to 12 so use both 
         print(f"{bus.name}, Longitude:{bus.longitude}, {vars(bus)}")
-        if   float(38.940000000)  < float(bus.longitude) < float(38.956884500): # the range of longitude where the function should get activated
+        if   38.942000000 < float(bus.longitude) < 38.942722950 and  0 < float(bus.calculatedCourse) < 90: # the range of longitude where the function should get activated
             print('hello there.')
             call=client.calls.create(
                 to=to_phone_number,
