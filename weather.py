@@ -10,10 +10,13 @@ import time
 
 lcd.clear()
 
+emojis={ extreme: "res/red_hot.jpg", sunny: "res/sun.jpg",  best: "res/best.jpg", rainy: "res/umbrella.jpg", snowy: "res/snow.jpg"}
 
-label0 = M5TextBox(114, 84, "0", lcd.FONT_DejaVu72, 0xFFFFFF, rotate=0)
-label1 = M5TextBox(24, 195,"0", lcd.FONT_UNICODE, 0xFFFFFF, rotate=0)
-label2 = M5TextBox(245, 203, "0", lcd.FONT_UNICODE, 0xFFFFFF, rotate=0)
+image0 = M5Img(112, 60, "res/best.jpg", True) #image is of 100x 91 pixels
+
+label0 = M5TextBox(114, 156, "10", lcd.FONT_DejaVu72, 0x222222, rotate=0)
+label1 = M5TextBox(24, 84,"10°C", lcd.FONT_UNICODE, 0x222222, rotate=0)
+label2 = M5TextBox(245, 84, "10°C", lcd.FONT_UNICODE, 0x222222, rotate=0)
 
 def currTemp(t):
   try:
@@ -55,7 +58,6 @@ def forecastTemp(p):
     
 time1=Timer(2)
 time1.init(period=86400000, mode=time1.PERIODIC, callback=forecastTemp)
-
 
 
 
