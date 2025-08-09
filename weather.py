@@ -26,6 +26,9 @@ def currTemp(t):
     curr_tempr=str(int(data["main"]["feels_like"]-273.15))
     
     label0.setText(curr_tempr)
+    ##image for the current temperature
+
+    image0 = M5Img(112, 60, "res/default.jpg", True)
     
     
     response.close()
