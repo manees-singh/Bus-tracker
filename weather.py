@@ -28,7 +28,7 @@ def currTemp(t):
     label0.setText(curr_tempr)
     ##image for the current temperature
 
-    image0 = M5Img(112, 60, "res/default.jpg", True)
+    
     
     
     response.close()
@@ -53,7 +53,7 @@ def forecastTemp(p):
     
     label1.setText( min+"°C")
     label2.setText(max+"°C")
-
+    image0 = M5Img(112, 60, "res/default.jpg", True)
     
   except:
     print("error")
