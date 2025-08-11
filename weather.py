@@ -10,8 +10,8 @@ import time
 
 lcd.clear()
 
-emojis={ extreme: "res/red_hot.jpg", sunny: "res/sun.jpg",  best: "res/best.jpg", rainy: "res/umbrella.jpg", snowy: "res/snow.jpg"}
-
+emojis={ default="res/default.jpg", extreme: "res/red_hot.jpg", sunny: "res/sun.jpg",  best: "res/best.jpg", rainy: "res/umbrella.jpg", snowy: "res/snow.jpg"}
+precipitation= forecast
 image0 = M5Img(112, 60, "res/best.jpg", True) #image is of 100x 91 pixels
 
 label0 = M5TextBox(114, 156, "10", lcd.FONT_DejaVu72, 0x222222, rotate=0)
@@ -53,12 +53,38 @@ def forecastTemp(p):
     
     label1.setText( min+"°C")
     label2.setText(max+"°C")
-    image0 = M5Img(112, 60, "res/default.jpg", True)
     
-  except:
-    print("error")
-    
-    
+
+    precipitation= forecast["DailyForecasts"][0]["Day"]["HasPrecipitation"]
+
+
+    if max > 30:
+        alert= extreme
+    elif precipitation:
+        if forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "rain":
+            alert= "rainy"
+        elif forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "snow":
+            alert= "snowy"
+
+    elif 22<max<30:
+        alert= "sunny"
+
+    elif 15<max<=22:
+        alert= "best"
+        
+    else:
+        alert= "default"
+
+
+        
+      except:
+        print("error")
+
+
+    image0.setImage(emojis[alert])
+
+
+
 time1=Timer(2)
 time1.init(period=86400000, mode=time1.PERIODIC, callback=forecastTemp)
 
