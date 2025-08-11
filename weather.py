@@ -10,9 +10,11 @@ import time
 
 lcd.clear()
 
-emojis={ default="res/default.jpg", extreme: "res/red_hot.jpg", sunny: "res/sun.jpg",  best: "res/best.jpg", rainy: "res/umbrella.jpg", snowy: "res/snow.jpg"}
-precipitation= forecast
-image0 = M5Img(112, 60, "res/best.jpg", True) #image is of 100x 91 pixels
+emojis={ "default":"res/default.jpg", "extreme": "res/red_hot.jpg", "sunny": "res/sun.jpg",  "best": "res/best.jpg",
+"rainy": "res/umbrella.jpg", "snowy": "res/snow.jpg"}
+
+lcd.image(112, 40, "res/best.jpg", scale=0, type=lcd.JPG) #image is of 100x 91 pixels
+
 
 label0 = M5TextBox(114, 156, "10", lcd.FONT_DejaVu72, 0x222222, rotate=0)
 label1 = M5TextBox(24, 84,"10°C", lcd.FONT_UNICODE, 0x222222, rotate=0)
@@ -48,17 +50,17 @@ def forecastTemp(p):
     forecast_data=urequests.get(accu_api)
     forecast=ujson.loads(forecast_data.text)
 
-    min= str(int((forecast["DailyForecasts"][0]["Temperature"]["Minimum"]["Value"]-32)/1.8))
-    max= str(int((forecast["DailyForecasts"][0]["Temperature"]["Maximum"]["Value"]-32)/1.8))
+    temp_min= str(int((forecast["DailyForecasts"][0]["Temperature"]["Minimum"]["Value"]-32)/1.8))
+    temp_max= str(int((forecast["DailyForecasts"][0]["Temperature"]["Maximum"]["Value"]-32)/1.8))
     
-    label1.setText( min+"°C")
-    label2.setText(max+"°C")
+    label1.setText( temp_min+"°C")
+    label2.setText(temp_max+"°C")
     
 
     precipitation= forecast["DailyForecasts"][0]["Day"]["HasPrecipitation"]
 
 
-    if max > 30:
+    if temp_max > 30:
         alert= extreme
     elif precipitation:
         if forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "rain":
@@ -66,22 +68,21 @@ def forecastTemp(p):
         elif forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "snow":
             alert= "snowy"
 
-    elif 22<max<30:
+    elif 22<temp_max<30:
         alert= "sunny"
 
-    elif 15<max<=22:
+    elif 15<temp_max<=22:
         alert= "best"
         
     else:
         alert= "default"
 
-
+    lcd.image(112, 60, emojis[alert], scale=0, type=lcd.JPG) 
+    forecast_data.close()
+    gc.collect()
         
-      except:
-        print("error")
-
-
-    image0.setImage(emojis[alert])
+  except:
+      print("error")
 
 
 
