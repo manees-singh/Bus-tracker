@@ -61,14 +61,14 @@ def forecastTemp(p):
     precipitation= forecast["DailyForecasts"][0]["Day"]["HasPrecipitation"]
 
 
-    if temp_max > 30:
+    
+    if precipitation: # check if there is any precipitation
+      if forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "rain":
+          alert= "rainy"
+      elif forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "snow":
+          alert= "snowy"
+    elif temp_max > 30:
         alert= extreme
-    elif precipitation:
-        if forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "rain":
-            alert= "rainy"
-        elif forecast["DailyForecasts"][0]["Day"]["PrecipitationType"].lower() == "snow":
-            alert= "snowy"
-
     elif 22<temp_max<30:
         alert= "sunny"
 
@@ -86,16 +86,20 @@ def forecastTemp(p):
       print("error")
 
 
+
+
+
+#runs the program for the first time
 currTemp(None)
 forecastTemp(None)
 
 
-
+#first clock of esp32 to update current temperature every hour
 tim=Timer(1)
 tim.init(period=1800000,mode=tim.PERIODIC, callback=currTemp)
 
 
-
+#second clock of esp32 to update forecast every 24 hours
 time1=Timer(2)
 time1.init(period=86400000, mode=time1.PERIODIC, callback=forecastTemp)
 
