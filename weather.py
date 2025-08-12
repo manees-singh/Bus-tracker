@@ -8,8 +8,10 @@ from machine import Timer
 import time 
 
 
+
 lcd.clear()
 
+setScreenColor(0XFFFFFF)
 emojis={ "default":"res/default.jpg", "extreme": "res/red_hot.jpg", "sunny": "res/sun.jpg",  "best": "res/best.jpg",
 "rainy": "res/umbrella.jpg", "snowy": "res/snow.jpg"}
 
@@ -39,8 +41,7 @@ def currTemp(t):
   except:
     label0.setText("Error!")
     
-tim=Timer(1)
-tim.init(period=1800000,mode=tim.PERIODIC, callback=currTemp)
+
 
 
 
@@ -85,6 +86,15 @@ def forecastTemp(p):
       print("error")
 
 
+currTemp(None)
+forecastTemp(None)
+
+
+
+tim=Timer(1)
+tim.init(period=1800000,mode=tim.PERIODIC, callback=currTemp)
+
+
 
 time1=Timer(2)
 time1.init(period=86400000, mode=time1.PERIODIC, callback=forecastTemp)
@@ -115,19 +125,4 @@ time1.init(period=86400000, mode=time1.PERIODIC, callback=forecastTemp)
 
 
 
-
-
-
-import requests
-import json
-
-response=requests.get(accu_api)
-
-data=response.json()
-
-min= int((data["DailyForecasts"][0]["Temperature"]["Minimum"]["Value"]-32)/1.8)
-max= int((data["DailyForecasts"][0]["Temperature"]["Maximum"]["Value"]-32)/1.8)
-
-print(min, max)
-response.close()
 
