@@ -1,7 +1,7 @@
 from m5stack import *
 from m5ui import *
 from uiflow import *
-import urequests
+import requests
 import gc
 import ujson
 from machine import Timer
@@ -25,7 +25,7 @@ label2 = M5TextBox(245, 84, "10°C", lcd.FONT_UNICODE, 0x222222, rotate=0)
 def currTemp(t):
   try:
     
-    response=urequests.get(url)
+    response=requests.get(url)
     data=ujson.loads(response.text)
     curr_tempr=str(int(data["main"]["feels_like"]-273.15))
     
@@ -48,7 +48,7 @@ def currTemp(t):
 
 def forecastTemp(p):
   try:
-    forecast_data=urequests.get(accu_api)
+    forecast_data=requests.get(accu_api)
     forecast=ujson.loads(forecast_data.text)
 
     temp_min= str(int((forecast["DailyForecasts"][0]["Temperature"]["Minimum"]["Value"]-32)/1.8))
