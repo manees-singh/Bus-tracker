@@ -16,7 +16,7 @@ wifiCfg.autoConnect(lcdShow=False)
 lcd.clear()
 
 setScreenColor(0XFFFFFF)
-emojis={ "default":"res/default.jpg", "extreme": "res/red_hot.jpg", "sunny": "res/sun.jpg",  "best": "res/best.jpg",
+emojis={ "default":"res/default.jpg", "extreme": "res/fire.jpg", "sunny": "res/sun.jpg",  "best": "res/best.jpg",
 "rainy": "res/umbrella.jpg", "snowy": "res/snow.jpg"}
 
 lcd.image(112, 40, "res/best.jpg", scale=0, type=lcd.JPG) #image is of 100x 91 pixels
@@ -45,10 +45,6 @@ def currTemp(t):
   except:
     label0.setText("Error!")
     
-
-
-
-
 
 def forecastTemp(p):
   try:
